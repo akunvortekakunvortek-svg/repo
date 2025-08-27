@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DDOS Attack Tool By BgaszE☠️</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  body {
+    margin: 0;
+    background: #0f111a;
+    color: #eee;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    user-select: none;
+  }
+
+  header {
+    background: #151a30;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ff3b3b;
+    text-align: center;
+    box-shadow: 0 3px 8px #ff3b3b80;
+  }
+
+  main {
+    flex: 1;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #bbb;
+  }
+
+  input[type="text"] {
+    padding: 0.8rem 1rem;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    border: none;
+    background: #22263b;
+    color: #eee;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    transition: background 0.3s ease;
+  }
+  input[type="text"]:focus {
+    background: #1a1f38;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  button {
+    flex: 1;
+    background: #ff3b3b;
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 12px #ff3b3b99;
+  }
+  button:hover:not(:disabled) {
+    background: #ff1a1a;
+    box-shadow: 0 6px 18px #ff1a1acc;
+  }
+  button:disabled {
+    background: #660000;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  #console {
+    background: #121621;
+    flex: 1;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-y: auto;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: #ff4c4c;
+    box-shadow: inset 0 0 15px #ff4c4c99;
+  }
+
+  .line {
+    white-space: nowrap;
+  }
+
+  /* Animasi titik-titik berjalan */
+  .loading-dots::after {
+    content: "";
+    animation: dots 1.2s steps(4, end) infinite;
+  }
+  @keyframes dots {
+    0%, 20% {
+      content: "";
+    }
+    40% {
+      content: ".";
+    }
+    60% {
+      content: "..";
+    }
+    80%, 100% {
+      content: "...";
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>DDOS ATTACK TOOL By BgaszE☠️</header>
+
+<main>
+  <label for="target">Masukkan Target URL / IP:</label>
+  <input type="text" id="target" placeholder="https://example.com atau 192.168.1.1" autocomplete="off" />
+
+  <div class="buttons">
+    <button id="startBtn">GASZ DDOS☠️🇦🇮</button>
+    <button id="stopBtn" disabled>STOP DDOS🤫</button>
+  </div>
+
+  <div id="console" aria-live="polite" aria-atomic="false"></div>
+</main>
+
+<script>
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const targetInput = document.getElementById('target');
+  const consoleDiv = document.getElementById('console');
+
+  let attackInterval = null;
+  let requestNumber = 0;
+
+  function scrollConsole() {
+    consoleDiv.scrollTop = consoleDiv.scrollHeight;
+  }
+
+  function printLine(text) {
+    const line = document.createElement('div');
+    line.classList.add('line');
+    line.textContent = text;
+    consoleDiv.appendChild(line);
+    scrollConsole();
+  }
+
+  function printLoadingLine(text) {
+    const line = document.createElement('div');
+    line.classList.add('line', 'loading-dots');
+    line.textContent = text;
+    consoleDiv.appendChild(line);
+    scrollConsole();
+    return line;
+  }
+
+  function startAttack() {
+    const target = targetInput.value.trim();
+    if (!target) {
+      alert('Masukkan target URL atau IP terlebih dahulu!');
+      return;
+    }
+
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+    targetInput.disabled = true;
+    consoleDiv.innerHTML = '';
+
+    printLine(`Initializing attack sequence on ${target}...`);
+
+    let loadingLine = printLoadingLine('Attacking');
+
+    requestNumber = 0;
+
+    attackInterval = setInterval(() => {
+      requestNumber++;
+      // update loading line
+      loadingLine.textContent = `Request #${requestNumber} sent to ${target}`;
+      scrollConsole();
+    }, 150);
+  }
+
+  function stopAttack() {
+    clearInterval(attackInterval);
+    attackInterval = null;
+    printLine('Attack stopped by user.');
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    targetInput.disabled = false;
+  }
+
+  startBtn.addEventListener('click', startAttack);
+  stopBtn.addEventListener('click', stopAttack);
+
+  // Optional: enter key to start
+  targetInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !startBtn.disabled) {
+      startAttack();
+    }
+  });
+</script>
+
+</body>
+</html>
